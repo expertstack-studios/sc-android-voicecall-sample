@@ -1,4 +1,4 @@
-package com.sc.scvoicecallsample.ui.theme
+package com.es.sc.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

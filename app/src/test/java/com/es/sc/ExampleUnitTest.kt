@@ -1,4 +1,4 @@
-package com.sc.scvoicecallsample
+package com.es.sc
 
 import org.junit.Test
 

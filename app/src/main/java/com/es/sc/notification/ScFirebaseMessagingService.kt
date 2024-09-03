@@ -1,8 +1,9 @@
-package com.sc.scvoicecallsample.notification
+package com.es.sc.notification
 
+import android.util.Log
+import com.es.sc.SCVoiceCallApp
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.sc.scvoicecallsample.SCVoiceCallApp
 
 class ScFirebaseMessagingService: FirebaseMessagingService() {
 
@@ -15,6 +16,7 @@ class ScFirebaseMessagingService: FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
+        Log.d("onMessageReceived", message.data.toString())
         if (securedVoiceCallSDK.isVoiceSDKPush(message))
         {
             securedVoiceCallSDK.processingIncomingPush(message)

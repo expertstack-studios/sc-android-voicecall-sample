@@ -1,14 +1,15 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.gms)
 }
 
 android {
-    namespace = "com.sc.scvoicecallsample"
+    namespace = "com.es.sc"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.sc.scvoicecallsample"
+        applicationId = "com.es.sc"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -37,7 +38,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     packaging {
         resources {

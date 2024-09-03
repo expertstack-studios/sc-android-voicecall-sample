@@ -1,4 +1,4 @@
-package com.sc.scvoicecallsample
+package com.es.sc
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.sc.scvoicecallsample", appContext.packageName)
+        assertEquals("com.es.sc", appContext.packageName)
     }
 }
