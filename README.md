@@ -129,5 +129,102 @@ Add below permissions into AndroidManifest.xml file
          }
        }
     }
-    ```
-  
+
+  ```
+
+ ## User Login
+
+   ### UserIdentifier, customerCareNumber and SecuredVoiceCallSDK declaration.
+   **UserIdentifier and customerCareNumber can be any user identifier if you are only using in-app calls. However, if you have configured both in-app and PSTN calls, the userIdentifier and customerCareNumber should be a Mobile number.**
+   ```kotlin
+    private lateinit var securedVoiceCallSDK: SecuredVoiceCallSDK
+    private val userIdentifier = "userIdentifier"
+    private val customerCareNumber = "customerCareNumber"
+   ```
+   - ### Login Code
+     Provide userIdentifier and SecuredVoiceCallBack interface implementation to handle Login and VoiceCallSession Success/Error callbacks
+     ```kotlin
+     private fun registerConsumerNumber(userIdentifier: String, securedVoiceCallBack: SecuredVoiceCallBack) {
+        securedVoiceCallSDK.setSecuredCallBack(securedVoiceCallBack)
+        securedVoiceCallSDK.login(userIdentifier)
+     }
+     ```
+
+ ## Handle required permissions callback
+
+   #### We need 1.Microphone and Phone 2.Contact and 3.Notification permissions.
+   Coppy below code to check above runtime permissions into your app after successful login in previous step.
+
+   ```kotlin
+        private fun checkPermissions() {
+        if (securedVoiceCallSDK.hasMicrophoneAndPhonePermission()) {
+            if (securedVoiceCallSDK.hasContactPermission()) {
+                if (securedVoiceCallSDK.hasNotificationPermission()) {
+                    securedVoiceCallSDK.registerDevicePushToken()
+                    securedVoiceCallSDK.createCallSession(callBack = this@MainActivity)
+
+                } else {
+                    securedVoiceCallSDK.requestNotificationPermission(this@MainActivity)
+                }
+            } else {
+                securedVoiceCallSDK.requestContactPermission(this@MainActivity)
+            }
+        } else {
+            securedVoiceCallSDK.requestMicrophoneAndPhonePermission(this@MainActivity)
+        }
+    }
+   ```
+
+   To handle permissions callback copy below code in your Activity class.
+  ```kotlin
+        override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            securedVoiceCallSDK.PERMISSIONS_REQUEST_MICROPHONE_PHONE,
+            securedVoiceCallSDK.PERMISSIONS_REQUEST_WRITE_CONTACTS,
+            securedVoiceCallSDK.PERMISSIONS_REQUEST_POST_NOTIFICATIONS -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    checkPermissions()
+                }
+                return
+            }
+        }
+    }
+ ```
+   
+ ## Handle SecuredVoiceCallBack interface callback for Login and Voice call session Success/Error
+ ### Implement SecuredVoiceCallBack interface at Activity level 
+ Copy below code for SecuredVoiceCallBack interface callbacks implement at Activity level (e.g. MainActivity.kt).
+ 
+  ```kotlin
+  class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
+
+    override fun onLoginError(message: String) {
+        //Handle onLoginError callback
+    }
+
+    override fun onLoginSuccess() {
+        //Handle onLoginSuccess callback
+        checkPermissions()
+    }
+
+    override fun onVoiceSessionError(message: String) {
+        //Handle onVoiceSessionError callback
+    }
+
+    override fun onVoiceSessionSuccess() {
+        //Handle onVoiceSessionSuccess callback.
+    }
+  }
+ ```
+  ## To make Outbound callback to Customer care using Voice call SDK
+   Copy below code for making Outbound callback to Customer care
+ ```kotlin
+     if (securedVoiceCallSDK.isInternetAvailable && securedVoiceCallSDK.isConsumerRegistered()) {
+         securedVoiceCallSDK.startOutBoundCall(customerCareNumber)
+     }
+ ```
+
+
+ 
