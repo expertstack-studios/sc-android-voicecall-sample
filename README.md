@@ -58,7 +58,7 @@ plugins {
 
    1. Go to your Android Studio project target.
    2. Select the **"File"** tab.
-   3. Click on **"New -> Folder -> Assets Folder"** option then select 'Target source set' option and click **"Finish"**.
+   3. Right click on projects module (e.g. app) **"app -> New -> Folder -> Assets Folder"** option then select 'Target source set' option and click **"Finish"**.
    4. Now you can see **'assets'** folder will be created on path **'app/src/main/assets'**
    5. Now paste the downloaded Config.dat file into assets folder.
 
