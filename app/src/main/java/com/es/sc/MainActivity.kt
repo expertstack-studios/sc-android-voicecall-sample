@@ -30,8 +30,8 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
     private lateinit var securedVoiceCallSDK: SecuredVoiceCallSDK
-    private val consumerNumber = "917020599233" //Consumer number to be registered
-    private val customerCareNumber = "+12012413481" //Customer care number to callback
+    private val userIdentifier = "userIdentifier"
+    private val customerCareNumber = "customerCareNumber"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +41,6 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
         setContent {
             setScreenContent()
         }
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                finish()
-            }
-        })
     }
 
     @Composable
@@ -65,7 +60,7 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
                 Button(
                     onClick = {
                         if (securedVoiceCallSDK.isInternetAvailable && !securedVoiceCallSDK.isConsumerRegistered()) {
-                            registerConsumerNumber(consumerNumber, this@MainActivity)
+                            registerConsumerNumber(userIdentifier, this@MainActivity)
                         }
                     },
                     modifier = Modifier,
@@ -98,9 +93,9 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
         }
     }
 
-    private fun registerConsumerNumber(mobileNumber: String, securedVoiceCallBack: SecuredVoiceCallBack) {
+    private fun registerConsumerNumber(userIdentifier: String, securedVoiceCallBack: SecuredVoiceCallBack) {
         securedVoiceCallSDK.setSecuredCallBack(securedVoiceCallBack)
-        securedVoiceCallSDK.login(mobileNumber)
+        securedVoiceCallSDK.login(userIdentifier)
     }
 
     private fun checkPermissions() {
@@ -108,7 +103,7 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
             if (securedVoiceCallSDK.hasContactPermission()) {
                 if (securedVoiceCallSDK.hasNotificationPermission()) {
                     securedVoiceCallSDK.registerDevicePushToken()
-                    securedVoiceCallSDK.createCallSession(callBack = null)
+                    securedVoiceCallSDK.createCallSession(callBack = this@MainActivity)
 
                 } else {
                     securedVoiceCallSDK.requestNotificationPermission(this@MainActivity)
@@ -136,12 +131,22 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
         }
     }
 
-    override fun onError(message: String) {
-        Log.d("onError", message)
+    override fun onLoginError(message: String) {
+        Log.d("onLoginError", message)
     }
 
     override fun onLoginSuccess() {
         Log.d("onLoginSuccess", "success")
         checkPermissions()
+    }
+
+    override fun onVoiceSessionError(message: String) {
+        Log.d("onVoiceSessionError", message)
+    }
+
+    override fun onVoiceSessionSuccess() {
+        setContent {
+            setScreenContent()
+        }
     }
 }
