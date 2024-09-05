@@ -79,9 +79,7 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
 
                     Button(
                         onClick = {
-                            if (securedVoiceCallSDK.isInternetAvailable && securedVoiceCallSDK.isConsumerRegistered()) {
-                                securedVoiceCallSDK.startOutBoundCall(customerCareNumber)
-                            }
+                            startOutBoundCall(customerCareNumber)
                         },
                         modifier = Modifier,
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Green, contentColor = Color.White)
@@ -96,6 +94,12 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
     private fun registerConsumerNumber(userIdentifier: String, securedVoiceCallBack: SecuredVoiceCallBack) {
         securedVoiceCallSDK.setSecuredCallBack(securedVoiceCallBack)
         securedVoiceCallSDK.login(userIdentifier)
+    }
+
+    private fun startOutBoundCall(customerCareNumber: String) {
+        if (securedVoiceCallSDK.isInternetAvailable && securedVoiceCallSDK.isConsumerRegistered()) {
+            securedVoiceCallSDK.startOutBoundCall(customerCareNumber)
+        }
     }
 
     private fun checkPermissions() {
