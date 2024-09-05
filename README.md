@@ -243,15 +243,6 @@ private fun registerConsumerNumber(userIdentifier: String, securedVoiceCallBack:
  ```kotlin
  lifecycleScope.launch { securedVoiceCallSDK.initializeSDKOnLaunch() }
  ```
-  ## To make Outbound callback to Customer care using Voice call SDK
-   Copy below code for making Outbound callback to Customer care
- ```kotlin
-private fun startOutBoundCall(customerCareNumber: String) {  
-    if (securedVoiceCallSDK.isInternetAvailable && securedVoiceCallSDK.isConsumerRegistered()) {  
-        securedVoiceCallSDK.startOutBoundCall(customerCareNumber)  
-    }  
-}
- ```
 By following these steps, you’ll integrate the SecuredCalls Voice SDK effectively, meeting user privacy expectations and handling notifications efficiently.
 
 ## Implementation Time Estimates Breakdown
@@ -265,9 +256,8 @@ By following these steps, you’ll integrate the SecuredCalls Voice SDK effectiv
 | **5. Create FirebaseMessagingService class** | Create FirebaseMessaging class and handle Incoming Voice SDK push.             | 3 minutes          |
 | **6. Add permissions to AndroidManifest.xml class** | Add permissions and FirebaseService class to AndroidManifest.xml        | 3 minutes          |
 | **7. Handle SecuredVoiceCallBack interface callback** | Handle callbacks for Login and Voice call session.                    | 2 minutes          |
-| **8. User Login**               | Add code to login by defining UserIdentifier and customerCareNumber to make outbound call.  | 5 minutes          | 
+| **8. User Login**               | Add code to login by defining UserIdentifier and customerCareNumber to make outbound call.  | 3 minutes          | 
 | **9. Handle permissions callbacks** | Handle permissions granted callback and register the device push with create session.   | 3 minutes          |
 | **10. Re-initialize SDK session on app launch** | You can Re-initialize SDK session on app launch.                            | 2 minutes          |
-| **11. Make Outbound callback to Customer care** | Provide customerCareNumber to make Outbound callback to Customer Care.      | 3 minutes          |
 
-**Total Estimated Time: 30 minutes**
+**Total Estimated Time: 25 minutes**
