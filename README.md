@@ -38,18 +38,18 @@ gms = { id = "com.google.gms.google-services", version.ref = "gms" }
 
 Plugins
  ```kotlin  
-    alias(libs.plugins.gms)
+alias(libs.plugins.gms)
  ```
 Dependencies
  ```kotlin  
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.messaging.ktx)
-    implementation(libs.sc.voice)
+implementation(platform(libs.firebase.bom))
+implementation(libs.firebase.messaging.ktx)
+implementation(libs.sc.voice)
  ```
  
 3. Open your project level build.gradle file and add below plugins.
  ```kotlin  
-    alias(libs.plugins.gms) apply false
+alias(libs.plugins.gms) apply false
  ```
 ## Adding Config.dat file downloaded from SecuredCalls portal
 
@@ -94,7 +94,7 @@ Dependencies
  ```
  2. Make sure you have added your application class (e.g. SCVoiceCallApp) name in AndroidManifest.xml file application tag. Copy below code to do it.
   ```kotlin
-     android:name=".SCVoiceCallApp"
+android:name=".SCVoiceCallApp"
  ```
 
 ## Creating a FirebaseMessagingService class and handling Incoming Push in Android
@@ -246,9 +246,11 @@ private fun registerConsumerNumber(userIdentifier: String, securedVoiceCallBack:
   ## To make Outbound callback to Customer care using Voice call SDK
    Copy below code for making Outbound callback to Customer care
  ```kotlin
- if (securedVoiceCallSDK.isInternetAvailable && securedVoiceCallSDK.isConsumerRegistered()) {
-     securedVoiceCallSDK.startOutBoundCall(customerCareNumber)
- }
+private fun startOutBoundCall(customerCareNumber: String) {  
+    if (securedVoiceCallSDK.isInternetAvailable && securedVoiceCallSDK.isConsumerRegistered()) {  
+        securedVoiceCallSDK.startOutBoundCall(customerCareNumber)  
+    }  
+}
  ```
 By following these steps, you’ll integrate the SecuredCalls Voice SDK effectively, meeting user privacy expectations and handling notifications efficiently.
 
