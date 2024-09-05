@@ -4,13 +4,10 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -31,7 +28,6 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
     private lateinit var securedVoiceCallSDK: SecuredVoiceCallSDK
     private val userIdentifier = "userIdentifier"
-    private val customerCareNumber = "customerCareNumber"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,20 +69,6 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
                         Text(text = "Register Consumer Number")
                     }
                 }
-
-                if (securedVoiceCallSDK.isConsumerRegistered()) {
-                    Spacer(modifier = Modifier.height(14.dp))
-
-                    Button(
-                        onClick = {
-                            startOutBoundCall(customerCareNumber)
-                        },
-                        modifier = Modifier,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Green, contentColor = Color.White)
-                    ) {
-                        Text(text = "Outbound Call  $customerCareNumber")
-                    }
-                }
             }
         }
     }
@@ -94,12 +76,6 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
     private fun registerConsumerNumber(userIdentifier: String, securedVoiceCallBack: SecuredVoiceCallBack) {
         securedVoiceCallSDK.setSecuredCallBack(securedVoiceCallBack)
         securedVoiceCallSDK.login(userIdentifier)
-    }
-
-    private fun startOutBoundCall(customerCareNumber: String) {
-        if (securedVoiceCallSDK.isInternetAvailable && securedVoiceCallSDK.isConsumerRegistered()) {
-            securedVoiceCallSDK.startOutBoundCall(customerCareNumber)
-        }
     }
 
     private fun checkPermissions() {
