@@ -34,25 +34,22 @@ sc-voice = { module = "com.securedcalls:sc-voice", version.ref = "scVoice" }
 gms = { id = "com.google.gms.google-services", version.ref = "gms" }
 ```
 
-2. Open your app level build.gradle file and add below plugins and dependancies.
+2. Open your app level build.gradle file and add below Plugins and Dependencies.
+
+Plugins
  ```kotlin  
-plugins {  
-    alias(libs.plugins.gms)  
-}
+    alias(libs.plugins.gms)
  ```
+Dependencies
  ```kotlin  
-dependencies {  
-    implementation(platform(libs.firebase.bom))  
-    implementation(libs.firebase.messaging.ktx)  
-    implementation(libs.sc.voice)  
-}
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.sc.voice)
  ```
  
 3. Open your project level build.gradle file and add below plugins.
  ```kotlin  
-plugins {
     alias(libs.plugins.gms) apply false
-}
  ```
 ## Adding Config.dat file downloaded from SecuredCalls portal
 
@@ -65,7 +62,7 @@ plugins {
 
 ## Adding google-services.json file 
 
-  1. Create your app's Google Firebase project with same same package name you have provided while registering app with 'SecuredCalls' portal.
+  1. Create your app's Google Firebase project with same package name you have provided while registering app with 'SecuredCalls' portal.
   2. Enable **'Firebase Cloud Messaging API'** in Google cloud developer console for registered app.
   3. Now goto **'Project settings'** select **'General'** Tab and scroll down, You can see your app with **'google-services.json'** file to download.
   4. Paste downloaded **'google-services.json'** file into project's app folder.
@@ -94,6 +91,10 @@ plugins {
         securedVoiceCallSDK.initializeSDK("**xxxxxxxSECRETxxxxxxx**")
     }
  }
+ ```
+ 2. Make sure you have added your application class (e.g. SCVoiceCallApp) name in AndroidManifest.xml file application tag. Copy below code to do it.
+  ```kotlin
+     android:name=".SCVoiceCallApp"
  ```
 
 ## Creating a FirebaseMessagingService class and handling Incoming Push in Android
