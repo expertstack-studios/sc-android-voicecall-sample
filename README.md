@@ -34,25 +34,22 @@ sc-voice = { module = "com.securedcalls:sc-voice", version.ref = "scVoice" }
 gms = { id = "com.google.gms.google-services", version.ref = "gms" }
 ```
 
-2. Open your app level build.gradle file and add below plugins and dependancies.
+2. Open your app level build.gradle file and add below Plugins and Dependencies.
+
+Plugins
  ```kotlin  
-plugins {  
-    alias(libs.plugins.gms)  
-}
+alias(libs.plugins.gms)
  ```
+Dependencies
  ```kotlin  
-dependencies {  
-    implementation(platform(libs.firebase.bom))  
-    implementation(libs.firebase.messaging.ktx)  
-    implementation(libs.sc.voice)  
-}
+implementation(platform(libs.firebase.bom))
+implementation(libs.firebase.messaging.ktx)
+implementation(libs.sc.voice)
  ```
  
 3. Open your project level build.gradle file and add below plugins.
  ```kotlin  
-plugins {
-    alias(libs.plugins.gms) apply false
-}
+alias(libs.plugins.gms) apply false
  ```
 ## Adding Config.dat file downloaded from SecuredCalls portal
 
@@ -65,7 +62,7 @@ plugins {
 
 ## Adding google-services.json file 
 
-  1. Create your app's Google Firebase project with same same package name you have provided while registering app with 'SecuredCalls' portal.
+  1. Create your app's Google Firebase project with same package name you have provided while registering app with 'SecuredCalls' portal.
   2. Enable **'Firebase Cloud Messaging API'** in Google cloud developer console for registered app.
   3. Now goto **'Project settings'** select **'General'** Tab and scroll down, You can see your app with **'google-services.json'** file to download.
   4. Paste downloaded **'google-services.json'** file into project's app folder.
@@ -94,6 +91,10 @@ plugins {
         securedVoiceCallSDK.initializeSDK("**xxxxxxxSECRETxxxxxxx**")
     }
  }
+ ```
+ 2. Make sure you have added your application class (e.g. SCVoiceCallApp) name in AndroidManifest.xml file application tag. Copy below code to do it.
+  ```kotlin
+android:name=".SCVoiceCallApp"
  ```
 
 ## Creating a FirebaseMessagingService class and handling Incoming Push in Android
@@ -242,13 +243,6 @@ private fun registerConsumerNumber(userIdentifier: String, securedVoiceCallBack:
  ```kotlin
  lifecycleScope.launch { securedVoiceCallSDK.initializeSDKOnLaunch() }
  ```
-  ## To make Outbound callback to Customer care using Voice call SDK
-   Copy below code for making Outbound callback to Customer care
- ```kotlin
- if (securedVoiceCallSDK.isInternetAvailable && securedVoiceCallSDK.isConsumerRegistered()) {
-     securedVoiceCallSDK.startOutBoundCall(customerCareNumber)
- }
- ```
 By following these steps, you’ll integrate the SecuredCalls Voice SDK effectively, meeting user privacy expectations and handling notifications efficiently.
 
 ## Implementation Time Estimates Breakdown
@@ -262,9 +256,8 @@ By following these steps, you’ll integrate the SecuredCalls Voice SDK effectiv
 | **5. Create FirebaseMessagingService class** | Create FirebaseMessaging class and handle Incoming Voice SDK push.             | 3 minutes          |
 | **6. Add permissions to AndroidManifest.xml class** | Add permissions and FirebaseService class to AndroidManifest.xml        | 3 minutes          |
 | **7. Handle SecuredVoiceCallBack interface callback** | Handle callbacks for Login and Voice call session.                    | 2 minutes          |
-| **8. User Login**               | Add code to login by defining UserIdentifier and customerCareNumber to make outbound call.  | 5 minutes          | 
+| **8. User Login**               | Add code to login by defining UserIdentifier and customerCareNumber to make outbound call.  | 3 minutes          | 
 | **9. Handle permissions callbacks** | Handle permissions granted callback and register the device push with create session.   | 3 minutes          |
 | **10. Re-initialize SDK session on app launch** | You can Re-initialize SDK session on app launch.                            | 2 minutes          |
-| **11. Make Outbound callback to Customer care** | Provide customerCareNumber to make Outbound callback to Customer Care.      | 3 minutes          |
 
-**Total Estimated Time: 30 minutes**
+**Total Estimated Time: 25 minutes**
