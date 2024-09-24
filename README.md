@@ -92,9 +92,10 @@ alias(libs.plugins.gms) apply false
     }
  }
  ```
- 2. Make sure you have added your application class (e.g. SCVoiceCallApp) name in AndroidManifest.xml file application tag. Copy below code to do it.
+ 2. Make sure you have added your application class (e.g. SCVoiceCallApp) name and allowBackup="false" in AndroidManifest.xml file application tag. Copy below code to do it.
   ```kotlin
 android:name=".SCVoiceCallApp"
+android:allowBackup="false"
  ```
 
 ## Creating a FirebaseMessagingService class and handling Incoming Push in Android
