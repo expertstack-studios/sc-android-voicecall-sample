@@ -16,7 +16,6 @@ class SCVoiceCallApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        securedVoiceCallSDK.initializeSDK("1ffngl8rvu7sfatcnaemc1b6es9rif61660scm4f2bgo9odvgkca")
-       // securedVoiceCallSDK.initializeSDK("1c8386ngg812la83fjc9qs9rj0henhj75qqpmaav5p3dm8r5bbsc")
+        securedVoiceCallSDK.initializeSDK("**xxxxxxxSECRETxxxxxxx**")
     }
 }
