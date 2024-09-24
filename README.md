@@ -19,7 +19,7 @@ Ensure you have the following for using the SecuredCalls Voice SDK for Android:
  ```kotlin  
 firebaseBom = "33.1.2"
 gms = "4.4.2"
-scVoice = "1.0.5"
+scVoice = "1.0.8"
 ```
 
 [libraries]
