@@ -83,7 +83,7 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
             if (securedVoiceCallSDK.hasContactPermission()) {
                 if (securedVoiceCallSDK.hasNotificationPermission()) {
                     securedVoiceCallSDK.registerDevicePushToken()
-                    securedVoiceCallSDK.createCallSession(callBack = this@MainActivity)
+                    securedVoiceCallSDK.createCallSession(callBack = null)
 
                 } else {
                     securedVoiceCallSDK.requestNotificationPermission(this@MainActivity)
