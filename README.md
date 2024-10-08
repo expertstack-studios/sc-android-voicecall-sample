@@ -186,6 +186,11 @@ private lateinit var securedVoiceCallSDK: SecuredVoiceCallSDK
 private val userIdentifier = "userIdentifier"
    ```
 
+   Initialize securedVoiceCallSDK variable into onCreate() function of Activity.
+   ```kotlin
+securedVoiceCallSDK = SCVoiceCallApp.instance.securedVoiceCallSDK
+   ```
+
  ### Login Code  
   Provide userIdentifier and SecuredVoiceCallBack interface implementation to handle Login and VoiceCallSession Success/Error callbacks
 
@@ -199,7 +204,7 @@ private fun registerConsumerNumber(userIdentifier: String, securedVoiceCallBack:
  ## Handle required permissions callbacks
 
    #### We need 1. Microphone and Phone 2. Contact and 3. Notification permissions.
-   Coppy below code to check above runtime permissions into your app after successful login in previous step.
+   Copy below code to check above runtime permissions into your app after successful login in previous step.
 
    ```kotlin
  private fun checkPermissions() {
@@ -207,7 +212,7 @@ private fun registerConsumerNumber(userIdentifier: String, securedVoiceCallBack:
         if (securedVoiceCallSDK.hasContactPermission()) {
             if (securedVoiceCallSDK.hasNotificationPermission()) {
                 securedVoiceCallSDK.registerDevicePushToken()
-                securedVoiceCallSDK.createCallSession(callBack = this@MainActivity)
+                securedVoiceCallSDK.createCallSession(callBack = null)
 
             } else {
                 securedVoiceCallSDK.requestNotificationPermission(this@MainActivity)
