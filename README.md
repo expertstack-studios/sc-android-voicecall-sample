@@ -116,8 +116,8 @@ securedVoiceCallSDK = SCVoiceCallApp.instance.securedVoiceCallSDK
   Provide userIdentifier and SecuredVoiceCallBack interface implementation to handle Login and VoiceCallSession Success/Error callbacks
 
    ```kotlin
-    securedVoiceCallSDK.setSecuredCallBack(securedVoiceCallBack)  
     securedVoiceCallSDK.login(userIdentifier)  
+    securedVoiceCallSDK.setSecuredCallBack(this)  
    ```
 
  ## Handle SecuredVoiceCallBack interface callback for Login and Voice call session Success/Error
