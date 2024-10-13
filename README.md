@@ -98,6 +98,49 @@ android:name=".SCVoiceCallApp"
 android:allowBackup="false"
  ```
 
+ ## Handle SecuredVoiceCallBack interface callback for Login and Voice call session Success/Error
+ ### Implement SecuredVoiceCallBack interface at Activity level 
+ Copy below code for SecuredVoiceCallBack interface callbacks implement at Activity level (e.g. MainActivity.kt).
+ 
+  ```kotlin
+  class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
+    override fun onLoginError(message: String) {
+        //Handle onLoginError callback
+    }
+    override fun onLoginSuccess() {
+        //Handle onLoginSuccess callback
+        checkPermissions()
+    }
+    override fun onVoiceSessionError(message: String) {
+        //Handle onVoiceSessionError callback
+    }
+    override fun onVoiceSessionSuccess() {
+        //Handle onVoiceSessionSuccess callback.
+    }
+  }
+ ```
+ ## User Login
+
+   ### UserIdentifier and SecuredVoiceCallSDK declaration.
+   UserIdentifier can be any user identifier if you are only using in-app calls. However, if you have configured both in-app and PSTN calls, the userIdentifier should be a Mobile number.
+   ```kotlin
+private lateinit var securedVoiceCallSDK: SecuredVoiceCallSDK
+private val userIdentifier = "userIdentifier"
+   ```
+
+   Initialize securedVoiceCallSDK variable into onCreate() function of Activity.
+   ```kotlin
+securedVoiceCallSDK = SCVoiceCallApp.instance.securedVoiceCallSDK
+   ```
+
+ ### Login Code  
+  Provide userIdentifier and SecuredVoiceCallBack interface implementation to handle Login and VoiceCallSession Success/Error callbacks
+
+   ```kotlin
+    securedVoiceCallSDK.setSecuredCallBack(securedVoiceCallBack)  
+    securedVoiceCallSDK.login(userIdentifier)  
+   ```
+
 ## Creating a FirebaseMessagingService class and handling Incoming Push in Android
 
  Follow these steps to create a FirebaseMessagingService class in your Android project. This class allows app to receive the new firebase push message received for Voice call or PSTN calls branding and initiating the call
@@ -155,50 +198,6 @@ Add below FirebaseMessagingService class (e.g. ScFirebaseMessagingService.kt) in
   android:exported="false">  
  <intent-filter> <action android:name="com.google.firebase.MESSAGING_EVENT" />  
  </intent-filter></service>
-   ```
- ## Handle SecuredVoiceCallBack interface callback for Login and Voice call session Success/Error
- ### Implement SecuredVoiceCallBack interface at Activity level 
- Copy below code for SecuredVoiceCallBack interface callbacks implement at Activity level (e.g. MainActivity.kt).
- 
-  ```kotlin
-  class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
-    override fun onLoginError(message: String) {
-        //Handle onLoginError callback
-    }
-    override fun onLoginSuccess() {
-        //Handle onLoginSuccess callback
-        checkPermissions()
-    }
-    override fun onVoiceSessionError(message: String) {
-        //Handle onVoiceSessionError callback
-    }
-    override fun onVoiceSessionSuccess() {
-        //Handle onVoiceSessionSuccess callback.
-    }
-  }
- ```
- ## User Login
-
-   ### UserIdentifier and SecuredVoiceCallSDK declaration.
-   UserIdentifier can be any user identifier if you are only using in-app calls. However, if you have configured both in-app and PSTN calls, the userIdentifier should be a Mobile number.
-   ```kotlin
-private lateinit var securedVoiceCallSDK: SecuredVoiceCallSDK
-private val userIdentifier = "userIdentifier"
-   ```
-
-   Initialize securedVoiceCallSDK variable into onCreate() function of Activity.
-   ```kotlin
-securedVoiceCallSDK = SCVoiceCallApp.instance.securedVoiceCallSDK
-   ```
-
- ### Login Code  
-  Provide userIdentifier and SecuredVoiceCallBack interface implementation to handle Login and VoiceCallSession Success/Error callbacks
-
-   ```kotlin
-private fun registerConsumerNumber(userIdentifier: String, securedVoiceCallBack: SecuredVoiceCallBack) {  
-    securedVoiceCallSDK.setSecuredCallBack(securedVoiceCallBack)  
-    securedVoiceCallSDK.login(userIdentifier)  
-}
    ```
 
  ## Handle required permissions callbacks
