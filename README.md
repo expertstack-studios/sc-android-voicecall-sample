@@ -98,27 +98,6 @@ android:name=".SCVoiceCallApp"
 android:allowBackup="false"
  ```
 
- ## Handle SecuredVoiceCallBack interface callback for Login and Voice call session Success/Error
- ### Implement SecuredVoiceCallBack interface at Activity level 
- Copy below code for SecuredVoiceCallBack interface callbacks implement at Activity level (e.g. MainActivity.kt).
- 
-  ```kotlin
-  class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
-    override fun onLoginError(message: String) {
-        //Handle onLoginError callback
-    }
-    override fun onLoginSuccess() {
-        //Handle onLoginSuccess callback
-        checkPermissions()
-    }
-    override fun onVoiceSessionError(message: String) {
-        //Handle onVoiceSessionError callback
-    }
-    override fun onVoiceSessionSuccess() {
-        //Handle onVoiceSessionSuccess callback.
-    }
-  }
- ```
  ## User Login
 
    ### UserIdentifier and SecuredVoiceCallSDK declaration.
@@ -140,6 +119,28 @@ securedVoiceCallSDK = SCVoiceCallApp.instance.securedVoiceCallSDK
     securedVoiceCallSDK.setSecuredCallBack(securedVoiceCallBack)  
     securedVoiceCallSDK.login(userIdentifier)  
    ```
+
+ ## Handle SecuredVoiceCallBack interface callback for Login and Voice call session Success/Error
+ ### Implement SecuredVoiceCallBack interface at Activity level 
+ Copy below code for SecuredVoiceCallBack interface callbacks implement at Activity level (e.g. MainActivity.kt).
+ 
+  ```kotlin
+  class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
+    override fun onLoginError(message: String) {
+        //Handle onLoginError callback
+    }
+    override fun onLoginSuccess() {
+        //Handle onLoginSuccess callback
+        checkPermissions()
+    }
+    override fun onVoiceSessionError(message: String) {
+        //Handle onVoiceSessionError callback
+    }
+    override fun onVoiceSessionSuccess() {
+        //Handle onVoiceSessionSuccess callback.
+    }
+  }
+ ```
 
 ## Creating a FirebaseMessagingService class and handling Incoming Push in Android
 
