@@ -23,17 +23,19 @@ import androidx.lifecycle.lifecycleScope
 import com.es.sc.theme.SCVoiceCallSampleTheme
 import com.es.sc.voice.main.SecuredVoiceCallBack
 import com.es.sc.voice.main.SecuredVoiceCallSDK
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
     private lateinit var securedVoiceCallSDK: SecuredVoiceCallSDK
     private val userIdentifier = "userIdentifier"
+    private val callbackIdentifier = "callbackIdentifier"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         securedVoiceCallSDK = SCVoiceCallApp.instance.securedVoiceCallSDK
-        lifecycleScope.launch { securedVoiceCallSDK.initializeSDKOnLaunch() } //Use this function to initialize SDK session on app launch
+        lifecycleScope.launch { securedVoiceCallSDK.initializeSDKOnLaunch(null) } //Use this function to initialize SDK session on app launch
         setContent {
             setScreenContent()
         }
@@ -69,6 +71,36 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
                         Text(text = "Register Consumer Number")
                     }
                 }
+
+                if (securedVoiceCallSDK.isConsumerRegistered()) {
+                    Button(
+                        onClick = {
+                            if (securedVoiceCallSDK.isInternetAvailable) {
+                                MainScope().launch {
+                                    securedVoiceCallSDK.initializeSDKOnLaunch(object : SecuredVoiceCallBack {
+                                        override fun onLoginSuccess() {
+                                        }
+                                        override fun onLoginError(message: String) {
+                                        }
+                                        override fun onVoiceSessionSuccess() {
+                                            securedVoiceCallSDK.startOutBoundCall(null, callbackIdentifier)
+                                        }
+                                        override fun onVoiceSessionError(message: String) {
+                                        }
+                                        override fun onCallStarted() {
+                                        }
+                                        override fun onCallFailed() {
+                                        }
+                                    })
+                                }
+                            }
+                        },
+                        modifier = Modifier,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Blue, contentColor = Color.White)
+                    ) {
+                        Text(text = "Callback call No.- $callbackIdentifier")
+                    }
+                }
             }
         }
     }
@@ -83,7 +115,7 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
             if (securedVoiceCallSDK.hasContactPermission()) {
                 if (securedVoiceCallSDK.hasNotificationPermission()) {
                     securedVoiceCallSDK.registerDevicePushToken()
-                    securedVoiceCallSDK.createCallSession(callBack = null)
+                    securedVoiceCallSDK.createCallSession(callBack = this)
 
                 } else {
                     securedVoiceCallSDK.requestNotificationPermission(this@MainActivity)
@@ -122,6 +154,14 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
 
     override fun onVoiceSessionError(message: String) {
         Log.d("onVoiceSessionError", message)
+    }
+
+    override fun onCallStarted() {
+        Log.d("onCallStarted", "success")
+    }
+
+    override fun onCallFailed() {
+        Log.d("onCallStarted", "success")
     }
 
     override fun onVoiceSessionSuccess() {

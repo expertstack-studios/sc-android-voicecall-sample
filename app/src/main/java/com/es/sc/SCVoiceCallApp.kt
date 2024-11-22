@@ -2,6 +2,7 @@ package com.es.sc
 
 import android.app.Application
 import com.es.sc.voice.main.SecuredVoiceCallSDK
+import com.es.sc.voice.main.models.ScSDKConfigModel
 
 class SCVoiceCallApp: Application() {
 
@@ -16,6 +17,6 @@ class SCVoiceCallApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        securedVoiceCallSDK.initializeSDK("**xxxxxxxSECRETxxxxxxx**")
+        securedVoiceCallSDK.initializeSDK(ScSDKConfigModel("**xxxxxxxSECRETxxxxxxx**", false))
     }
 }
