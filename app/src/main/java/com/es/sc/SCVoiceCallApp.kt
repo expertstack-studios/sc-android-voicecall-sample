@@ -17,6 +17,6 @@ class SCVoiceCallApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        securedVoiceCallSDK.initializeSDK(ScSDKConfigModel("**xxxxxxxSECRETxxxxxxx**", false))
+        securedVoiceCallSDK.initializeSDK(ScSDKConfigModel("**xxxxxxxSECRETxxxxxxx**", true))
     }
 }

@@ -19,7 +19,7 @@ Ensure you have the following for using the SecuredCalls Voice SDK for Android:
  ```kotlin  
 firebaseBom = "33.1.2"
 gms = "4.4.2"
-scVoice = "1.0.8"
+scVoice = "1.0.10"
 ```
 
 [libraries]
@@ -88,7 +88,7 @@ alias(libs.plugins.gms) apply false
 
     override fun onCreate() {
         super.onCreate()
-        securedVoiceCallSDK.initializeSDK("**xxxxxxxSECRETxxxxxxx**")
+        securedVoiceCallSDK.initializeSDK(ScSDKConfigModel("**xxxxxxxSECRETxxxxxxx**", true))
     }
  }
  ```
@@ -105,6 +105,7 @@ android:allowBackup="false"
    ```kotlin
 private lateinit var securedVoiceCallSDK: SecuredVoiceCallSDK
 private val userIdentifier = "userIdentifier"
+private val callbackIdentifier = "callbackIdentifier"
    ```
 
    Initialize securedVoiceCallSDK variable into onCreate() function of Activity.
@@ -116,8 +117,29 @@ securedVoiceCallSDK = SCVoiceCallApp.instance.securedVoiceCallSDK
   Provide userIdentifier and SecuredVoiceCallBack interface implementation to handle Login and VoiceCallSession Success/Error callbacks
 
    ```kotlin
-    securedVoiceCallSDK.login(userIdentifier)  
-    securedVoiceCallSDK.setSecuredCallBack(this)  
+    securedVoiceCallSDK.setSecuredCallBack(this)
+    securedVoiceCallSDK.login(userIdentifier)
+   ```
+
+## Make Outbound callback to Customer care
+
+1. To make Outbound callback to Customer care
+  ```kotlin
+securedVoiceCallSDK.initializeSDKOnLaunch(object : SecuredVoiceCallBack {
+   override fun onLoginSuccess() {
+   }
+   override fun onLoginError(message: String) {
+   }
+   override fun onVoiceSessionSuccess() {
+      securedVoiceCallSDK.startOutBoundCall(null, callbackIdentifier)
+   }
+   override fun onVoiceSessionError(message: String) {
+   }
+   override fun onCallStarted() {
+   }
+   override fun onCallFailed() {
+   }
+})
    ```
 
  ## Handle SecuredVoiceCallBack interface callback for Login and Voice call session Success/Error
@@ -139,6 +161,12 @@ securedVoiceCallSDK = SCVoiceCallApp.instance.securedVoiceCallSDK
     override fun onVoiceSessionSuccess() {
         //Handle onVoiceSessionSuccess callback.
     }
+   override fun onCallStarted() {
+      //Handle onCallStarted callback of outbound call 
+   }
+   override fun onCallFailed() {
+      //Handle onCallFailed callback of outbound call 
+   }
   }
  ```
 
@@ -252,17 +280,18 @@ By following these steps, you’ll integrate the SecuredCalls Voice SDK effectiv
 
 ## Implementation Time Estimates Breakdown
 
-| **Task**                                 | **Description**                                                                    | **Estimated Time** |
-|------------------------------------------|------------------------------------------------------------------------------------|--------------------|
-| **1. Add the SDK to Your Project** | Add above defined libraries in build.gradle file and sync project.                       | 3 minutes          |
-| **2. Add Config.dat file**       | Add Config.dat file downloaded from SecuredCalls portal into assets folder.                | 2 minutes          |
-| **3. Add google-services.json file** | Add google-services.json file app folder for enabling firebase cloud messaging.        | 2 minutes          |
-| **4. SDK Initialization**             | Initializing the SDK in project's application class with the provided API key.        | 2 minutes          |
-| **5. Create FirebaseMessagingService class** | Create FirebaseMessaging class and handle Incoming Voice SDK push.             | 3 minutes          |
-| **6. Add permissions to AndroidManifest.xml class** | Add permissions and FirebaseService class to AndroidManifest.xml        | 3 minutes          |
-| **7. Handle SecuredVoiceCallBack interface callback** | Handle callbacks for Login and Voice call session.                    | 2 minutes          |
-| **8. User Login**               | Add code for login by defining UserIdentifier to receive incoming call from Customer care.  | 3 minutes          | 
-| **9. Handle permissions callbacks** | Handle permissions granted callback and register the device push with create session.   | 3 minutes          |
-| **10. Re-initialize SDK session on app launch** | You can Re-initialize SDK session on app launch.                            | 2 minutes          |
+| **Task**                                              | **Description**                                                                            | **Estimated Time** |
+|-------------------------------------------------------|--------------------------------------------------------------------------------------------|--------------------|
+| **1. Add the SDK to Your Project**                    | Add above defined libraries in build.gradle file and sync project.                         | 3 minutes          |
+| **2. Add Config.dat file**                            | Add Config.dat file downloaded from SecuredCalls portal into assets folder.                | 2 minutes          |
+| **3. Add google-services.json file**                  | Add google-services.json file app folder for enabling firebase cloud messaging.            | 2 minutes          |
+| **4. SDK Initialization**                             | Initializing the SDK in project's application class with the provided API key.             | 2 minutes          |
+| **5. Create FirebaseMessagingService class**          | Create FirebaseMessaging class and handle Incoming Voice SDK push.                         | 3 minutes          |
+| **6. Add permissions to AndroidManifest.xml class**   | Add permissions and FirebaseService class to AndroidManifest.xml                           | 3 minutes          |
+| **7. Handle SecuredVoiceCallBack interface callback** | Handle callbacks for Login and Voice call session.                                         | 2 minutes          |
+| **8. User Login**                                     | Add code for login by defining UserIdentifier to receive incoming call from Customer care. | 3 minutes          | 
+| **9. Make Outbound callback to Customer care**        | Add code for making Outbound callback to Customer care.                                    | 3 minutes          | 
+| **10. Handle permissions callbacks**                  | Handle permissions granted callback and register the device push with create session.      | 3 minutes          |
+| **11. Re-initialize SDK session on app launch**       | You can Re-initialize SDK session on app launch.                                           | 2 minutes          |
 
-**Total Estimated Time: 25 minutes**
+**Total Estimated Time: 28 minutes**
