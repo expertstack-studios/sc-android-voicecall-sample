@@ -370,11 +370,11 @@ By following these steps, you’ll integrate the SecuredCalls Voice SDK effectiv
 | **2. Add Config.dat file**                            | Add Config.dat file downloaded from SecuredCalls portal into assets folder.                      | 2 minutes          |
 | **3. Add google-services.json file**                  | Add google-services.json file app folder for enabling firebase cloud messaging.                  | 2 minutes          |
 | **4. SDK Initialization**                             | Initializing the SDK in project's application class with the provided API key.                   | 2 minutes          |
-| **5. Create FirebaseMessagingService class**          | Create FirebaseMessaging class and handle Incoming Voice SDK push.                               | 3 minutes          |
-| **6. Add permissions to AndroidManifest.xml class**   | Add permissions and FirebaseService class to AndroidManifest.xml                                 | 3 minutes          |
-| **7. Show Permission sheet when permissions denied**  | Check runtime permission and show Permission required Sheet to enable it within app after login  | 2 minutes          |
-| **8. Handle SecuredVoiceCallBack interface callback** | Handle callbacks for Login and Voice call session.                                               | 2 minutes          |
-| **9. User Login**                                     | Add code for login by defining UserIdentifier to receive incoming call from Customer care.       | 3 minutes          | 
+| **5. User Login**                                     | Add code for login by defining UserIdentifier to receive incoming call from Customer care.       | 3 minutes          |
+| **6. Handle SecuredVoiceCallBack interface callback** | Handle callbacks for Login and Voice call session.                                               | 2 minutes          |
+| **7. Create FirebaseMessagingService class**          | Create FirebaseMessaging class and handle Incoming Voice SDK push.                               | 3 minutes          |
+| **8. Add permissions to AndroidManifest.xml class**   | Add permissions and FirebaseService class to AndroidManifest.xml                                 | 3 minutes          |
+| **9. Show Permission sheet when permissions denied**  | Check runtime permission and show Permission required Sheet to enable it within app after login  | 2 minutes          |
 | **10. Handle permissions callbacks**                  | Handle required permissions callbacks on login and permission sheet and create new session.      | 3 minutes          |
 | **11. Make Outbound callback to Customer care**       | Add code for making Outbound callback to Customer care.                                          | 3 minutes          | 
 | **12. Re-initialize SDK session on app launch**       | You can Re-initialize SDK session on app launch.                                                 | 2 minutes          |
