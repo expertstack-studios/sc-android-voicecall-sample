@@ -123,7 +123,6 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
                 NonDismissibleBottomDialogSheet(
                     showBottomSheet = showPermissionRequiredBottomSheet,
                     onDismissRequest = {
-                        Log.d("onDismissRequest", "true")
                         PermissionState.showPermissionRequiredBottomSheet.value = false
                     },
                 ) {
@@ -191,9 +190,7 @@ class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
         if (securedVoiceCallSDK.hasMicrophoneAndPhonePermission()) {
             if (securedVoiceCallSDK.hasContactPermission()) {
                 if (securedVoiceCallSDK.hasNotificationPermission()) {
-                    securedVoiceCallSDK.registerDevicePushToken()
-                    securedVoiceCallSDK.createCallSession(callBack = this)
-
+                    lifecycleScope.launch { securedVoiceCallSDK.initializeSDKOnLaunch(this@MainActivity) }
                 } else {
                     securedVoiceCallSDK.requestNotificationPermission(this@MainActivity)
                 }

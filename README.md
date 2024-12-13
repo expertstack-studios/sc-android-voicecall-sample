@@ -19,7 +19,7 @@ Ensure you have the following for using the SecuredCalls Voice SDK for Android:
  ```kotlin  
 firebaseBom = "33.1.2"
 gms = "4.4.2"
-scVoice = "1.0.10"
+scVoice = "1.0.11"
 ```
 
 [libraries]
@@ -46,31 +46,31 @@ implementation(platform(libs.firebase.bom))
 implementation(libs.firebase.messaging.ktx)
 implementation(libs.sc.voice)
  ```
- 
+
 3. Open your project level build.gradle file and add below plugins.
  ```kotlin  
 alias(libs.plugins.gms) apply false
  ```
 ## Adding Config.dat file downloaded from SecuredCalls portal
 
-   1. Go to your Android Studio project target.
-   2. Select the **"File"** tab.
-   3. Right click on projects module (e.g. app) **"app -> New -> Folder -> Assets Folder"** option then select 'Target source set' option and click **"Finish"**.
-   4. Now you can see **'assets'** folder will be created on path **'app/src/main/assets'**
-   5. Now paste the downloaded Config.dat file into assets folder.
+1. Go to your Android Studio project target.
+2. Select the **"File"** tab.
+3. Right click on projects module (e.g. app) **"app -> New -> Folder -> Assets Folder"** option then select 'Target source set' option and click **"Finish"**.
+4. Now you can see **'assets'** folder will be created on path **'app/src/main/assets'**
+5. Now paste the downloaded Config.dat file into assets folder.
 
 
-## Adding google-services.json file 
+## Adding google-services.json file
 
-  1. Create your app's Google Firebase project with same package name you have provided while registering app with 'SecuredCalls' portal.
-  2. Enable **'Firebase Cloud Messaging API'** in Google cloud developer console for registered app.
-  3. Now goto **'Project settings'** select **'General'** Tab and scroll down, You can see your app with **'google-services.json'** file to download.
-  4. Paste downloaded **'google-services.json'** file into project's app folder.
+1. Create your app's Google Firebase project with same package name you have provided while registering app with 'SecuredCalls' portal.
+2. Enable **'Firebase Cloud Messaging API'** in Google cloud developer console for registered app.
+3. Now goto **'Project settings'** select **'General'** Tab and scroll down, You can see your app with **'google-services.json'** file to download.
+4. Paste downloaded **'google-services.json'** file into project's app folder.
 
 
 ## Initialize SecuredVoiceCallSDK in Project's Application class
 
-  1. To initialize **'SecuredVoiceCallSDK'** into you project paste below code into your Application class (e.g. SCVoiceCallApp). Replace **'xxxxxxxSECRETxxxxxxx'** with your actual API key.
+1. To initialize **'SecuredVoiceCallSDK'** into you project paste below code into your Application class (e.g. SCVoiceCallApp). Replace **'xxxxxxxSECRETxxxxxxx'** with your actual API key.
   ```kotlin
   import android.app.Application
   import com.es.sc.voice.main.SecuredVoiceCallSDK
@@ -92,60 +92,38 @@ alias(libs.plugins.gms) apply false
     }
  }
  ```
- 2. Make sure you have added your application class (e.g. SCVoiceCallApp) name and allowBackup="false" in AndroidManifest.xml file application tag. Copy below code to do it.
+2. Make sure you have added your application class (e.g. SCVoiceCallApp) name and allowBackup="false" in AndroidManifest.xml file application tag. Copy below code to do it.
   ```kotlin
 android:name=".SCVoiceCallApp"
 android:allowBackup="false"
  ```
 
- ## User Login
+## User Login
 
-   ### UserIdentifier and SecuredVoiceCallSDK declaration.
-   UserIdentifier can be any user identifier if you are only using in-app calls. However, if you have configured both in-app and PSTN calls, the userIdentifier should be a Mobile number.
+### UserIdentifier and SecuredVoiceCallSDK declaration.
+UserIdentifier can be any user identifier if you are only using in-app calls. However, if you have configured both in-app and PSTN calls, the userIdentifier should be a Mobile number.
    ```kotlin
 private lateinit var securedVoiceCallSDK: SecuredVoiceCallSDK
 private val userIdentifier = "userIdentifier"
 private val callbackIdentifier = "callbackIdentifier"
    ```
 
-   Initialize securedVoiceCallSDK variable into onCreate() function of Activity.
+Initialize securedVoiceCallSDK variable into onCreate() function of Activity.
    ```kotlin
 securedVoiceCallSDK = SCVoiceCallApp.instance.securedVoiceCallSDK
    ```
 
- ### Login Code  
-  Provide userIdentifier and SecuredVoiceCallBack interface implementation to handle Login and VoiceCallSession Success/Error callbacks
+### Login Code
+Provide userIdentifier and SecuredVoiceCallBack interface implementation to handle Login and VoiceCallSession Success/Error callbacks
 
    ```kotlin
     securedVoiceCallSDK.setSecuredCallBack(this)
     securedVoiceCallSDK.login(userIdentifier)
    ```
+## Handle SecuredVoiceCallBack interface callback for Login and Voice call session Success/Error
+### Implement SecuredVoiceCallBack interface at Activity level
+Copy below code for SecuredVoiceCallBack interface callbacks implement at Activity level (e.g. MainActivity.kt).
 
-## Make Outbound callback to Customer care
-
-1. To make Outbound callback to Customer care
-  ```kotlin
-securedVoiceCallSDK.initializeSDKOnLaunch(object : SecuredVoiceCallBack {
-   override fun onLoginSuccess() {
-   }
-   override fun onLoginError(message: String) {
-   }
-   override fun onVoiceSessionSuccess() {
-      securedVoiceCallSDK.startOutBoundCall(null, callbackIdentifier)
-   }
-   override fun onVoiceSessionError(message: String) {
-   }
-   override fun onCallStarted() {
-   }
-   override fun onCallFailed() {
-   }
-})
-   ```
-
- ## Handle SecuredVoiceCallBack interface callback for Login and Voice call session Success/Error
- ### Implement SecuredVoiceCallBack interface at Activity level 
- Copy below code for SecuredVoiceCallBack interface callbacks implement at Activity level (e.g. MainActivity.kt).
- 
   ```kotlin
   class MainActivity : ComponentActivity(), SecuredVoiceCallBack {
     override fun onLoginError(message: String) {
@@ -172,16 +150,16 @@ securedVoiceCallSDK.initializeSDKOnLaunch(object : SecuredVoiceCallBack {
 
 ## Creating a FirebaseMessagingService class and handling Incoming Push in Android
 
- Follow these steps to create a FirebaseMessagingService class in your Android project. This class allows app to receive the new firebase push message received for Voice call or PSTN calls branding and initiating the call
+Follow these steps to create a FirebaseMessagingService class in your Android project. This class allows app to receive the new firebase push message received for Voice call or PSTN calls branding and initiating the call
 
-   #### 1. Create a new FirebaseMessagingService class
+#### 1. Create a new FirebaseMessagingService class
 
-   1. Open your Android project.
-   2. Right click on project source folder(e.g. notification) and click **'New -> Kotlin Class/File -> Class'** option and enter class name (e.g. ScFirebaseMessagingService)
-   
-   #### 2. Handling Incoming Voice SDK push in FirebaseMessagingService
+1. Open your Android project.
+2. Right click on project source folder(e.g. notification) and click **'New -> Kotlin Class/File -> Class'** option and enter class name (e.g. ScFirebaseMessagingService)
 
-   1. Open the FirebaseMessagingService class (e.g. ScFirebaseMessagingService.kt) file and paste below code.
+#### 2. Handling Incoming Voice SDK push in FirebaseMessagingService
+
+1. Open the FirebaseMessagingService class (e.g. ScFirebaseMessagingService.kt) file and paste below code.
 
   ```kotlin
    import com.es.sc.SCVoiceCallApp
@@ -207,7 +185,7 @@ securedVoiceCallSDK.initializeSDKOnLaunch(object : SecuredVoiceCallBack {
   ```
 ## Adding required permissions and FirebaseMessagingService class into AndroidManifest.xml file
 
-Add below permissions into AndroidManifest.xml file 
+Add below permissions into AndroidManifest.xml file
  ```kotlin  
 <uses-feature
     android:name="android.hardware.telephony"
@@ -220,7 +198,7 @@ Add below permissions into AndroidManifest.xml file
 <uses-permission android:name="android.permission.READ_CONTACTS"/>
 <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
    ```
-Add below FirebaseMessagingService class (e.g. ScFirebaseMessagingService.kt) into AndroidManifest.xml file 
+Add below FirebaseMessagingService class (e.g. ScFirebaseMessagingService.kt) into AndroidManifest.xml file
  ```kotlin  
 <service  
   android:name=".notification.ScFirebaseMessagingService"  
@@ -229,19 +207,74 @@ Add below FirebaseMessagingService class (e.g. ScFirebaseMessagingService.kt) in
  </intent-filter></service>
    ```
 
- ## Handle required permissions callbacks
+## Show Permission sheet when permissions denied
+Copy below code into composer view to show permission sheet runtime when permissions denied.
+```kotlin
+val showPermissionRequiredBottomSheet by PermissionState.showPermissionRequiredBottomSheet  
+val hasMicrophoneAndPhonePermission by PermissionState.hasMicrophoneAndPhonePermission  
+val hasContactPermission by PermissionState.hasContactPermission  
+val hasNotificationPermission by PermissionState.hasNotificationPermission  
+  
+NonDismissibleBottomDialogSheet(  
+    showBottomSheet = showPermissionRequiredBottomSheet,  
+    onDismissRequest = {  
+  PermissionState.showPermissionRequiredBottomSheet.value = false  
+  },  
+) {  
+  PermissionRequiredContent(  
+        modifier = Modifier,  
+        hasMicrophonePhonePermission = hasMicrophoneAndPhonePermission,  
+        hasContactPermission = hasContactPermission,  
+        hasNotificationPermission = hasNotificationPermission,  
+        onRequestMicrophonePhonePermission = {  
+  if (securedVoiceCallSDK.isPermissionDeniedTwice(securedVoiceCallSDK.MICROPHONE_PERMISSION_DENIED)) {  
+                securedVoiceCallSDK.openAppPermissionsSettings(this@MainActivity)  
+                needToCheckPermission = true  
+  } else {  
+                securedVoiceCallSDK.requestMicrophoneAndPhonePermission(this@MainActivity, true)  
+            }  
+        },  
+        onRequestContactPermission = {  
+  if (securedVoiceCallSDK.isPermissionDeniedTwice(securedVoiceCallSDK.CONTACT_PERMISSION_DENIED)) {  
+                securedVoiceCallSDK.openAppPermissionsSettings(this@MainActivity)  
+                needToCheckPermission = true  
+  } else {  
+                securedVoiceCallSDK.requestContactPermission(this@MainActivity, true)  
+            }  
+        },  
+        onRequestNotificationPermission = {  
+  if (securedVoiceCallSDK.isPermissionDeniedTwice(securedVoiceCallSDK.NOTIFICATION_PERMISSION_DENIED)) {  
+                securedVoiceCallSDK.openAppPermissionsSettings(this@MainActivity)  
+                needToCheckPermission = true  
+  } else {  
+                securedVoiceCallSDK.requestNotificationPermission(this@MainActivity, true)  
+            }  
+        }  
+  )  
+}
+ ```
+Copy below PermissionState singleton object code into kotlin class to show permission sheet runtime when permissions denied.
+ ```kotlin
 
-   #### We need 1. Microphone and Phone 2. Contact and 3. Notification permissions.
-   Copy below code to check above runtime permissions into your app after successful login in previous step.
+object PermissionState {  
+    var showPermissionRequiredBottomSheet = mutableStateOf(false)  
+    var hasMicrophoneAndPhonePermission = mutableStateOf(false)  
+    var hasContactPermission = mutableStateOf(false)  
+    var hasNotificationPermission = mutableStateOf(false)  
+}
+ ```
+
+## Handle required permissions callbacks on login and permission sheet
+
+#### We need 1. Microphone and Phone 2. Contact and 3. Notification permissions.
+Copy below code to check above runtime permissions into your app after successful login in previous step.
 
    ```kotlin
  private fun checkPermissions() {
     if (securedVoiceCallSDK.hasMicrophoneAndPhonePermission()) {
         if (securedVoiceCallSDK.hasContactPermission()) {
             if (securedVoiceCallSDK.hasNotificationPermission()) {
-                securedVoiceCallSDK.registerDevicePushToken()
-                securedVoiceCallSDK.createCallSession(callBack = null)
-
+                lifecycleScope.launch {securedVoiceCallSDK.initializeSDKOnLaunch(this@MainActivity) }
             } else {
                 securedVoiceCallSDK.requestNotificationPermission(this@MainActivity)
             }
@@ -254,7 +287,7 @@ Add below FirebaseMessagingService class (e.g. ScFirebaseMessagingService.kt) in
 }
    ```
 
-   To handle permissions callback copy below code in your Activity class.
+To handle permissions callback copy below code in your Activity class.
   ```kotlin
  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -268,11 +301,62 @@ Add below FirebaseMessagingService class (e.g. ScFirebaseMessagingService.kt) in
             }
             return
         }
-    }
+	        securedVoiceCallSDK.PERMISSIONS_REQUEST_MICROPHONE_PHONE_POPUP -> {  
+	            if (grantResults.isNotEmpty()) {  
+	              if (grantResults.contains(PackageManager.PERMISSION_DENIED)) {   
+	              securedVoiceCallSDK.handlePermissionDenied(securedVoiceCallSDK.MICROPHONE_PERMISSION_DENIED)  
+		        } else {  
+		            checkPermissionsToShowPermissionSheet()  
+		               }  
+				}  
+				    return  
+				} 
+			securedVoiceCallSDK.PERMISSIONS_REQUEST_WRITE_CONTACTS_POPUP -> {  
+			    if (grantResults.isNotEmpty()) {  
+			        if (grantResults.contains(PackageManager.PERMISSION_DENIED)) {  
+				       securedVoiceCallSDK.handlePermissionDenied(securedVoiceCallSDK.CONTACT_PERMISSION_DENIED)  
+			        } else {  
+			            checkPermissionsToShowPermissionSheet()  
+			        }  
+			    }  
+			    return  
+			}  
+  
+			securedVoiceCallSDK.PERMISSIONS_REQUEST_POST_NOTIFICATIONS_POPUP -> {  
+			    if (grantResults.isNotEmpty()) {  
+			        if (grantResults.contains(PackageManager.PERMISSION_DENIED)) {  
+			            securedVoiceCallSDK.handlePermissionDenied(securedVoiceCallSDK.NOTIFICATION_PERMISSION_DENIED)  
+			        } else {  
+			            checkPermissionsToShowPermissionSheet()  
+			        }  
+			    }  
+			    return  
+		}
+	}
 }
  ```
-   ## Re-initialize SDK session on app launch
-   You can re-initialize SDK session on your app launch by adding below code in your launcher activity class.
+## Make Outbound callback to Customer care
+
+1. To make Outbound callback to Customer care
+  ```kotlin
+securedVoiceCallSDK.initializeSDKOnLaunch(object : SecuredVoiceCallBack {
+   override fun onLoginSuccess() {
+   }
+   override fun onLoginError(message: String) {
+   }
+   override fun onVoiceSessionSuccess() {
+      securedVoiceCallSDK.startOutBoundCall(null, callbackIdentifier)
+   }
+   override fun onVoiceSessionError(message: String) {
+   }
+   override fun onCallStarted() {
+   }
+   override fun onCallFailed() {
+   }
+})
+   ```
+## Re-initialize SDK session on app launch
+You can re-initialize SDK session on your app launch by adding below code in your launcher activity class.
  ```kotlin
  lifecycleScope.launch { securedVoiceCallSDK.initializeSDKOnLaunch() }
  ```
@@ -280,18 +364,19 @@ By following these steps, you’ll integrate the SecuredCalls Voice SDK effectiv
 
 ## Implementation Time Estimates Breakdown
 
-| **Task**                                              | **Description**                                                                            | **Estimated Time** |
-|-------------------------------------------------------|--------------------------------------------------------------------------------------------|--------------------|
-| **1. Add the SDK to Your Project**                    | Add above defined libraries in build.gradle file and sync project.                         | 3 minutes          |
-| **2. Add Config.dat file**                            | Add Config.dat file downloaded from SecuredCalls portal into assets folder.                | 2 minutes          |
-| **3. Add google-services.json file**                  | Add google-services.json file app folder for enabling firebase cloud messaging.            | 2 minutes          |
-| **4. SDK Initialization**                             | Initializing the SDK in project's application class with the provided API key.             | 2 minutes          |
-| **5. Create FirebaseMessagingService class**          | Create FirebaseMessaging class and handle Incoming Voice SDK push.                         | 3 minutes          |
-| **6. Add permissions to AndroidManifest.xml class**   | Add permissions and FirebaseService class to AndroidManifest.xml                           | 3 minutes          |
-| **7. Handle SecuredVoiceCallBack interface callback** | Handle callbacks for Login and Voice call session.                                         | 2 minutes          |
-| **8. User Login**                                     | Add code for login by defining UserIdentifier to receive incoming call from Customer care. | 3 minutes          | 
-| **9. Make Outbound callback to Customer care**        | Add code for making Outbound callback to Customer care.                                    | 3 minutes          | 
-| **10. Handle permissions callbacks**                  | Handle permissions granted callback and register the device push with create session.      | 3 minutes          |
-| **11. Re-initialize SDK session on app launch**       | You can Re-initialize SDK session on app launch.                                           | 2 minutes          |
+| **Task**                                              | **Description**                                                                                  | **Estimated Time** |
+|-------------------------------------------------------|--------------------------------------------------------------------------------------------------|--------------------|
+| **1. Add the SDK to Your Project**                    | Add above defined libraries in build.gradle file and sync project.                               | 3 minutes          |
+| **2. Add Config.dat file**                            | Add Config.dat file downloaded from SecuredCalls portal into assets folder.                      | 2 minutes          |
+| **3. Add google-services.json file**                  | Add google-services.json file app folder for enabling firebase cloud messaging.                  | 2 minutes          |
+| **4. SDK Initialization**                             | Initializing the SDK in project's application class with the provided API key.                   | 2 minutes          |
+| **5. Create FirebaseMessagingService class**          | Create FirebaseMessaging class and handle Incoming Voice SDK push.                               | 3 minutes          |
+| **6. Add permissions to AndroidManifest.xml class**   | Add permissions and FirebaseService class to AndroidManifest.xml                                 | 3 minutes          |
+| **7. Show Permission sheet when permissions denied**  | Check runtime permission and show Permission required Sheet to enable it within app after login  | 2 minutes          |
+| **8. Handle SecuredVoiceCallBack interface callback** | Handle callbacks for Login and Voice call session.                                               | 2 minutes          |
+| **9. User Login**                                     | Add code for login by defining UserIdentifier to receive incoming call from Customer care.       | 3 minutes          | 
+| **10. Handle permissions callbacks**                  | Handle required permissions callbacks on login and permission sheet and create new session.      | 3 minutes          |
+| **11. Make Outbound callback to Customer care**       | Add code for making Outbound callback to Customer care.                                          | 3 minutes          | 
+| **12. Re-initialize SDK session on app launch**       | You can Re-initialize SDK session on app launch.                                                 | 2 minutes          |
 
-**Total Estimated Time: 28 minutes**
+**Total Estimated Time: 30 minutes**
